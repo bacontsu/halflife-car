@@ -48,25 +48,65 @@ inline struct cvar_s* CVAR_CREATE(const char* cv, const char* val, const int fla
 #define SPR_Frames (*gEngfuncs.pfnSPR_Frames)
 #define SPR_GetList (*gEngfuncs.pfnSPR_GetList)
 
+// ScreenHeight returns the height of the screen, in pixels
+#define ScreenHeight (gHUD.m_scrinfo.iHeight)
+// ScreenWidth returns the width of the screen, in pixels
+#define ScreenWidth (gHUD.m_scrinfo.iWidth)
+
 // SPR_Draw  draws a the current sprite as solid
-#define SPR_Draw (*gEngfuncs.pfnSPR_Draw)
+//#define SPR_Draw (*gEngfuncs.pfnSPR_Draw)
+inline void SPR_Draw(int frame, int x, int y, const Rect* prc)
+{
+	if (ScreenWidth > 1280)
+	x = x * 1280 / ScreenWidth;
+	if (ScreenHeight > 720)
+	y = y * 720 / ScreenHeight;
+	gEngfuncs.pfnSPR_Draw(frame, x, y, prc);
+}
+
 // SPR_DrawHoles  draws the current sprites,  with color index255 not drawn (transparent)
-#define SPR_DrawHoles (*gEngfuncs.pfnSPR_DrawHoles)
+//#define SPR_DrawHoles (*gEngfuncs.pfnSPR_DrawHoles)
+inline void SPR_DrawHoles(int frame, int x, int y, const Rect* prc)
+{
+	if (ScreenWidth > 1280)
+		x = x * 1280 / ScreenWidth;
+	if (ScreenHeight > 720)
+		y = y * 720 / ScreenHeight;
+	gEngfuncs.pfnSPR_DrawHoles(frame, x, y, prc);
+}
+
 // SPR_DrawAdditive  adds the sprites RGB values to the background  (additive transulency)
-#define SPR_DrawAdditive (*gEngfuncs.pfnSPR_DrawAdditive)
+//#define SPR_DrawAdditive (*gEngfuncs.pfnSPR_DrawAdditive)
+inline void SPR_DrawAdditive(int frame, int x, int y, const Rect* prc)
+{
+	if (ScreenWidth > 1280)
+		x = x * 1280 / ScreenWidth;
+	if (ScreenHeight > 720)
+		y = y * 720 / ScreenHeight;
+	gEngfuncs.pfnSPR_DrawAdditive(frame, x, y, prc);
+}
 
 // SPR_EnableScissor  sets a clipping rect for HUD sprites.  (0,0) is the top-left hand corner of the screen.
 #define SPR_EnableScissor (*gEngfuncs.pfnSPR_EnableScissor)
 // SPR_DisableScissor  disables the clipping rect
 #define SPR_DisableScissor (*gEngfuncs.pfnSPR_DisableScissor)
 //
-#define FillRGBA (*gEngfuncs.pfnFillRGBA)
+//#define FillRGBA (*gEngfuncs.pfnFillRGBA)
+inline void FillRGBA(int x, int y, int width, int height, int r, int g, int b, int a)
+{
+	if (ScreenWidth > 1280)
+	{
+		x = x * 1280 / ScreenWidth;
+		width = width * 1280 / ScreenWidth;
+	}
+	if (ScreenHeight > 720)
+	{
+		y = y * 720 / ScreenHeight;
+		height = height * 720 / ScreenHeight;
+	}
 
-
-// ScreenHeight returns the height of the screen, in pixels
-#define ScreenHeight (gHUD.m_scrinfo.iHeight)
-// ScreenWidth returns the width of the screen, in pixels
-#define ScreenWidth (gHUD.m_scrinfo.iWidth)
+	gEngfuncs.pfnFillRGBA(x, y, width, height, r, g, b, a);
+}
 
 #define BASE_XRES 640.f
 

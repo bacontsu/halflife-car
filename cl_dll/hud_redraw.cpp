@@ -20,6 +20,9 @@
 
 #include "vgui_TeamFortressViewport.h"
 
+#include "PlatformHeaders.h"
+#include <gl/GL.h>
+
 #define MAX_LOGO_FRAMES 56
 
 int grgLogoFrame[MAX_LOGO_FRAMES] =
@@ -137,6 +140,15 @@ bool CHud::Redraw(float flTime, bool intermission)
 	// if no redrawing is necessary
 	// return 0;
 
+	int scaleX = (ScreenWidth - 1280) / 2;
+	int scaleY = (ScreenHeight - 720) / 2;
+
+	//glViewport(+scaleX, -scaleY, ScreenWidth, ScreenHeight);
+	//glViewport(0, -(scaleY * 2), ScreenWidth, ScreenHeight);
+	glViewport(0, -(scaleY * 2 * ScreenHeight / 720), ScreenWidth * ScreenWidth / 1280, ScreenHeight * ScreenHeight / 720);
+	//glViewport(0, -(scaleY * 2.75), ScreenWidth + (scaleX * 2.75), ScreenHeight + (scaleY * 2.75));
+	//glViewport(0, 0, ScreenWidth + (scaleX * 2), ScreenHeight + (scaleY * 2));
+
 	// draw all registered HUD elements
 	if (0 != m_pCvarDraw->value)
 	{
@@ -180,6 +192,8 @@ bool CHud::Redraw(float flTime, bool intermission)
 		SPR_DrawAdditive(i, x, y, NULL);
 	}
 
+	glViewport(0,0, ScreenWidth, ScreenHeight);
+
 	/*
 	if ( g_iVisibleMouse )
 	{
@@ -215,6 +229,10 @@ void ScaleColors(int& r, int& g, int& b, int a)
 
 int CHud::DrawHudString(int xpos, int ypos, int iMaxX, const char* szIt, int r, int g, int b)
 {
+	if (ScreenWidth > 1280)
+		xpos = xpos * 1280 / ScreenWidth;
+	if (ScreenHeight > 720)
+		ypos = ypos * 720 / ScreenHeight;
 	return xpos + gEngfuncs.pfnDrawString(xpos, ypos, szIt, r, g, b);
 }
 
@@ -228,6 +246,10 @@ int CHud::DrawHudNumberString(int xpos, int ypos, int iMinX, int iNumber, int r,
 // draws a string from right to left (right-aligned)
 int CHud::DrawHudStringReverse(int xpos, int ypos, int iMinX, const char* szString, int r, int g, int b)
 {
+	if (ScreenWidth > 1280)
+		xpos = xpos * 1280 / ScreenWidth;
+	if (ScreenHeight > 720)
+		ypos = ypos * 720 / ScreenHeight;
 	return xpos - gEngfuncs.pfnDrawStringReverse(xpos, ypos, szString, r, g, b);
 }
 
