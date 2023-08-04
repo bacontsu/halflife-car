@@ -353,10 +353,13 @@ public:
 	bool MsgFunc_Flashlight(const char* pszName, int iSize, void* pbuf);
 	bool MsgFunc_FlashBat(const char* pszName, int iSize, void* pbuf);
 
+	void drawNightVision();
+
 private:
 	HSPRITE m_hSprite1;
 	HSPRITE m_hSprite2;
 	HSPRITE m_hBeam;
+	HSPRITE m_nvSprite;
 	Rect* m_prc1;
 	Rect* m_prc2;
 	Rect* m_prcBeam;
@@ -493,6 +496,8 @@ private:
 	float m_flMouseSensitivity;
 	int m_iConcussionEffect;
 
+	bool mNightVisionState;
+
 public:
 	HSPRITE m_hsprCursor;
 	float m_flTime;		  // the current client time
@@ -616,6 +621,17 @@ public:
 	void AddHudElem(CHudBase* p);
 
 	float GetSensitivity();
+
+	bool isNightVisionOn() { return mNightVisionState; }
+
+	void setNightVisionState(bool state);
+
+	void getNightVisionHudItemColor(int& r, int& g, int& b)
+	{
+		r = 255;
+		g = 255;
+		b = 255;
+	}
 };
 
 extern CHud gHUD;

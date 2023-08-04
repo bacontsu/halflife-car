@@ -325,6 +325,8 @@ void CHud::Init()
 	m_iLogo = 0;
 	m_iFOV = 0;
 
+	setNightVisionState(false);
+
 	CVAR_CREATE("zoom_sensitivity_ratio", "1.2", 0);
 	CVAR_CREATE("cl_autowepswitch", "1", FCVAR_ARCHIVE | FCVAR_USERINFO);
 	default_fov = CVAR_CREATE("default_fov", "90", FCVAR_ARCHIVE);
@@ -695,4 +697,9 @@ void CHud::AddHudElem(CHudBase* phudelem)
 float CHud::GetSensitivity()
 {
 	return m_flMouseSensitivity;
+}
+
+void CHud::setNightVisionState(bool state)
+{
+	mNightVisionState = state;
 }

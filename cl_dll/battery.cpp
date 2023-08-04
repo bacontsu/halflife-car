@@ -85,6 +85,11 @@ bool CHudBattery::Draw(float flTime)
 
 	UnpackRGB(r, g, b, RGB_YELLOWISH);
 
+	if (gHUD.isNightVisionOn())
+	{
+		gHUD.getNightVisionHudItemColor(r, g, b);
+	}
+
 	if (!gHUD.HasSuit())
 		return true;
 
